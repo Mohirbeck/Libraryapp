@@ -1,0 +1,39 @@
+{% extends './layout.html' %}
+{% load static %}
+
+{% block body %}
+  
+  <div>
+    <div class="row" style="margin-top: 50px;">
+      <div class="col-sm-3"></div>
+
+      <div class="col-sm-6">
+        <div class="jumbotron">
+          <h2 style="text-align: center;">Login to your account</h2>
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8" style="text-align: left;">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="uname">Username</label>
+                  <input type="text" name="uname" id="uname" value="{{ uname }}" class="form-control" placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                  <label for="pwd">Password</label>
+                  <input type="password" name="pwd" id="pwd" value="{{ pwd }}" class="form-control" placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn btn-primary form-control">Log in</button>
+              </form>
+            </div>
+            <div class="col-sm-2"></div>
+          </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="col-sm-3"></div>
+    </div>
+  </div>
+{% endblock %}

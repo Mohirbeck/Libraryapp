@@ -1,0 +1,79 @@
+{% extends './layout.html' %} {% load static %} {% block body %}
+<div class="container">
+  <div class="row">
+    {% for book in page.object_list %}
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-2 gx-5">
+      <div
+        class="card"
+        style="
+          margin-top: 25px;
+          box-shadow: 0 4px 4px 4px #00000033, 0 3px 3px 0 #00000030;
+          padding: 0;
+          border-radius: 12px;
+          overflow: hidden;
+        "
+      >
+        <img width="100%" src="{{ book.pic.url }}" alt="Card image cap" />
+        <div class="card-body">
+          <h6 class="card-title">{{ book.title }}</h6>
+          <p style="font-size: 12px" class="card-text">By {{ book.author }}</p>
+        </div>
+        {% if not request.user.is_staff %}
+        <div class="card-footer">
+          {% if book.available_copies == 0 %}
+          <small>Sorry, no copies left!</small>
+          {% elif book in student.books.all %}
+          <small>You already have this book!</small>
+          {% else %}
+          <a
+            style="font-size: 12px"
+            href="{% url 'get_book' pk=book.id id=request.user.id %}"
+            class="btn btn-outline-primary"
+            >Get book</a
+          >
+          {% endif %}
+        </div>
+        {% else %}
+        <div class="card-footer">
+          <small>{{ book.available_copies }} copies left!</small>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <center>
+    <nav aria-label="Page navigation example" style="margin-top: 15px;">
+      <ul class="pagination">
+        {% if page.has_previous %}
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="{% url 'books' %}?page={{ page.previous_page_number }}"
+            tabindex="-1"
+            >Previous</a
+          >
+        </li>
+        {% endif %} {% for singlepage in books_paginator %}
+        
+        <li class="page-item {% if page.number == singlepage.number %} active {% else %}{% endif %}">        
+          <a
+            class="page-link"
+            href="{% url 'books' %}?page={{ singlepage.number }}"
+            >{{ singlepage.number }}</a
+          >
+        </li>
+        {% endfor %} {% if page.has_next %}
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="{% url 'books' %}?page={{ page.next_page_number }}"
+            >Next</a
+          >
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </center>
+</div>
+{% endblock %}

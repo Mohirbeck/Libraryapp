@@ -1,0 +1,84 @@
+{% extends './layout.html' %} {% load static %} {% block css %}
+<link rel="stylesheet" href="{% static 'library/css/user_page.css' %}" />
+{% endblock %}{% block body%} {% if user.is_staff %}
+<div class="container lib">
+  <h3>Welcome, {{ user.first_name }}</h3>
+  <a href="{% url 'addbook' %}" class="btn">Add Book</a>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn" data-toggle="modal" data-target="#student">
+    Receive Book
+  </button>
+  <a href="{% url 'addstudent' %}" class="btn">Add Student</a>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="student"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="studentModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="studentModalLabel">Choose student</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" class="">
+        {% csrf_token %}
+        <div class="modal-body">
+          <select class="browser-default custom-select" name="select">
+            {% for student in students %}
+            <option value="{{ student.id }}">{{ student }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-success">Choose</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<div class="container">
+  <h3>Welcome, {{ user.first_name }} {{ user.last_name }}!</h3>
+  <h5>Your books</h5>
+  <div class="row">
+    {% for book in student.books.all %}
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-2 gx-5">
+      <div
+        class="card"
+        style="
+          margin-top: 25px;
+          box-shadow: 0 4px 4px 4px #00000033, 0 3px 3px 0 #00000030;
+          padding: 0;
+          border-radius: 12px;
+          overflow: hidden;
+        "
+      >
+        <img width="100%" src="{{ book.pic.url }}" alt="Card image cap" />
+        <div class="card-body">
+          <h6 class="card-title">{{ book.title }}</h6>
+          <p style="font-size: 12px" class="card-text">By {{ book.author }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endif %} {% endblock %}

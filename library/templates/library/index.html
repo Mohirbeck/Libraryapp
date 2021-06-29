@@ -1,0 +1,22 @@
+{% extends './layout.html' %}
+{% load static %}
+{% block css %}
+    <style>
+        h1{
+            position: absolute;
+            margin: 5%;
+            color: #fff;
+            width: 45%;
+        }
+        @media screen and (max-width: 768px){
+            h1{
+                font-size: 24px;
+            }
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<h1>Welcome to ISFT Library Managament System</h1>
+<img src="{% static 'library/images/image.jpeg' %}" class="img-fluid" alt="Responsive image">
+
+{% endblock %}
